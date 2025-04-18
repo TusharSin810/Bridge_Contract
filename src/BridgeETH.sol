@@ -7,6 +7,8 @@ contract BridgeETH is Ownable {
     uint256 public balance;
     address public tokenAddress;
 
+    // TOKEN ADDRESS IS THE ADDRESS OF THE TOKEN U WANT TO BRIDGE
+
     event Deposit(address indexed depositor, uint amount);
     mapping(address => uint256) public pendingBalance;
 
@@ -22,6 +24,7 @@ contract BridgeETH is Ownable {
     }
 
     function withdraw(IERC20 _tokenAddress, uint256 _amount) public {
+        require(address(_tokenAddress) == tokenAddress);
         require(pendingBalance[msg.sender] >= _amount);
         pendingBalance[msg.sender] -= _amount;
         _tokenAddress.transfer(msg.sender, _amount);
